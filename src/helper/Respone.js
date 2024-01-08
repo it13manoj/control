@@ -1,0 +1,26 @@
+export const RESPONSE = {
+  OK: {
+    CODE: 200,
+    MESSAGE: "SUCCESS",
+  },
+  NOT_FOUND: {
+    CODE: 404,
+    MESSAGE: "RESOUCE_NOT_FOUND",
+  },
+  PERMISSION_REJECT: {
+    CODE: 403,
+    MESSAGE: "ANAUTHORISED_ACCESS",
+  },
+  EMPTY_DATA: {
+    CODE: 1010,
+    MESSAGE: "NO_DATA_FOUND",
+  },
+  PARAMETER_MISSING: {
+    CODE: 1011,
+    MESSAGE: "REQUIRED_PARAM_MISSING",
+  },
+  BAD_REQUEST: {
+    CODE: 501,
+    MESSAGE: "BAD_REQUEST",
+  },
+};
