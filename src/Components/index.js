@@ -11,6 +11,10 @@ const Index = () => {
 	const [files, setFiles] = useState("");
 	const [loader, setloader] = useState(true);
 	const [success, setSuccess] = useState(false);
+	const [message, setmessage] = useState({
+		error:"",
+		success:""
+	})
 	const handleFileChange = (e) => {
 		const selectedFile = e.target.files[0];
 		console.log('====================================');
@@ -26,14 +30,35 @@ const Index = () => {
 		};
 	};
 
+	const removeMessage = () =>{
+		setTimeout(()=>{
+			setmessage(preState=>({...preState,error:"",success:""}));
+		},10000)
+	}
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setloader(false);
 		let parmas = files;
-		apiCall(UPLOADS.add, REQUEST_TYPE.POST, parmas).then((results) => {
+		apiCall(UPLOADS.add, REQUEST_TYPE.POST, parmas).then(async (results) => {
+			if(await results.response.data.statusCode==201){
+				setloader(true);
+				setSuccess(false)
+				setFiles("");
+				setFileName("");
+				setmessage(preState=>({...preState, error:results.response.data.message}))
+				removeMessage();
+			}else{
+				console.log('====================================');
+				console.log(JSON.parse(results.response.data.message));
+				console.log('====================================');
+				setmessage(preState=>({...preState, success:"Please download json file"}))
+				setloader(true);
+				setSuccess(true)
+				removeMessage();
+			}
 			console.log(results)
-			setloader(true);
-			setSuccess(true)
+			
 		})
 		// setloader(true);
 	};
@@ -90,7 +115,8 @@ const Index = () => {
 						</>
 					}
 					{loader == false && <div class="loader"></div>}
-
+					<span style={{color:'red'}}>{message.error}</span>
+					<span style={{color:'green'}}>{message.success}</span>
 				</div>
 
 			</div>
